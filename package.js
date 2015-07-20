@@ -12,11 +12,13 @@ Package.onUse(function (api) {
   })
   api.use(['webapp', 'underscore'])
   api.use('cosmos:browserify@0.3.0', 'client')
-  api.addFiles('client.browserify.js', ['server', 'client'])
   api.addFiles(
     [
-      'iso-router.js',
-      'navigate.js'
+      'lib/client.browserify.js',
+      'lib/events.js',
+      'lib/route.js',
+      'lib/navigate.js',
+      'iso-router.js'
     ],
     ['server', 'client']
   )
