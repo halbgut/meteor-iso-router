@@ -1,6 +1,7 @@
 IsoRouter = {}
 
 IsoRouter.routes = []
+IsoRouter.Route = Route
 
 IsoRouter.route = function isoRouterRoute (path) {
   return (
@@ -37,7 +38,7 @@ if(Meteor.isClient) {
     if(!this.currentRoute) return
     this.currentRoute
       .callAll('enter', this.currentRoute.parameters)
-      .call('actionValue', parameters)
+      .call('action', parameters)
   }
 
   IsoRouter.exit = function () {
