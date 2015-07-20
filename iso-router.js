@@ -18,37 +18,47 @@ IsoRouter.getRouteForPath = function isoRouterGetRouteForPath (path) {
   return _.find(this.routes, caller('match', path))
 }
 
-if(Meteor.isServer) {
-  IsoRouter.serve = function isoRouterServe (req, res, next) {
-    this.currentRoute = this.getRouteForPath(req.url)
-    if(!this.currentRoute) return next()
-    if(this.currentRoute.serverValue) return this.currentRoute.serverValue(req, res, next)
-    this.currentRoute
-      .callAll('enter', this.currentRoute.parameters)
-      .call('actionValue', parameters)
-  }
-  /* Install the global listener */
-  WebApp.connectHandlers.use(IsoRouter.serve.bind(IsoRouter))
+IsoRouter.exit = function () {
+  if(this.currentRoute) this.currentRoute.callAll('exit')
 }
 
-if(Meteor.isClient) {
+IsoRouter.location = function (req) {
+  return req ?
+    req.url :
+    location.pathname
+}
 
-  IsoRouter.serve = function isoRouterServe () {
-    this.currentRoute = this.getRouteForPath(location.pathname)
-    if(!this.currentRoute) return
-    this.currentRoute
-      .callAll('enter', this.currentRoute.parameters)
-      .call('action', parameters)
-  }
+IsoRouter.serve = function isoRouterServe () {
+  var params = setConnectParams(arguments)
+  this.currentRoute = this.getRouteForPath(this.location(params.req))
+  if(!this.currentRoute) return params.next()
+  if(Meteor.isServer) setConnectParams(arguments, this.currentRoute)
+  this.currentRoute
+    .callAll('enter', this.currentRoute.parameters)
+    .call('action', parameters)
+}
 
-  IsoRouter.exit = function () {
-    console.log(this.currentRoute)
-    if(this.currentRoute) this.currentRoute.callAll('exit')
-  }
+/* This is to replace the connect handlers, next argument on the client-side */
+IsoRouter.next = function next () {}
 
-  addEventListener('load', IsoRouter.serve.bind(IsoRouter))
-  addEventListener('isoRouter-enter', IsoRouter.exit.bind(IsoRouter))
-  addEventListener('isoRouter-navigate', IsoRouter.serve.bind(IsoRouter))
+eventTarget.addEventListener(
+  'load',
+  IsoRouter.serve.bind(IsoRouter)
+)
+
+eventTarget.addEventListener(
+  'isoRouter-enter',
+  IsoRouter.exit.bind(IsoRouter)
+)
+
+eventTarget.addEventListener(
+  'isoRouter-navigate',
+  IsoRouter.serve.bind(IsoRouter)
+)
+
+if(Meteor.isServer) {
+  /* Install the global listener */
+  WebApp.connectHandlers.use(IsoRouter.serve.bind(IsoRouter))
 }
 
 function caller (key/*, args ... */) {

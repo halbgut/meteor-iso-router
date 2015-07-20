@@ -15,6 +15,7 @@ Package.onUse(function (api) {
   api.addFiles(
     [
       'lib/client.browserify.js',
+      'lib/utils.js',
       'lib/events.js',
       'lib/route.js',
       'lib/navigate.js',
