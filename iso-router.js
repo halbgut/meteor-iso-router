@@ -10,9 +10,9 @@ Route.action = function routeAction (action) {
   return this
 }
 
-Route.before = function routeBefore (before) {
-  this.beforeValue = this.beforeValue || []
-  this.beforeValue.push(before)
+Route.enter = function routeEnter (enter) {
+  this.enterValue = this.enterValue || []
+  this.enterValue.push(enter)
   return this
 }
 
@@ -80,7 +80,7 @@ if(Meteor.isServer) {
     if(!this.currentRoute) return next()
     if(this.currentRoute.serverValue) return this.currentRoute.serverValue(req, res, next)
     this.currentRoute
-      .callAll('before', this.currentRoute.parameters)
+      .callAll('enter', this.currentRoute.parameters)
       .call('actionValue', parameters)
   }
   /* Install the global listener */
@@ -93,7 +93,7 @@ if(Meteor.isClient) {
     this.currentRoute = this.getRouteForPath(location.pathname)
     if(!this.currentRoute) return
     this.currentRoute
-      .callAll('before', this.currentRoute.parameters)
+      .callAll('enter', this.currentRoute.parameters)
       .call('actionValue', parameters)
   }
 
@@ -103,8 +103,8 @@ if(Meteor.isClient) {
   }
 
   addEventListener('load', IsoRouter.serve.bind(IsoRouter))
-  addEventListener('beforeNavigate', IsoRouter.exit.bind(IsoRouter))
-  addEventListener('navigate', IsoRouter.serve.bind(IsoRouter))
+  addEventListener('isoRouter-enter', IsoRouter.exit.bind(IsoRouter))
+  addEventListener('isoRouter-navigate', IsoRouter.serve.bind(IsoRouter))
 }
 
 function caller (key/*, args ... */) {

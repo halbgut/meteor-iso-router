@@ -1,5 +1,5 @@
 function navigate (url) {
-  navigate.eventTarget.dispatchEvent(navigate.beforeNavigate)
+  navigate.eventTarget.dispatchEvent(navigate.enter)
   _.defer(function () {
     if(Meteor.isClient) goTo(url, this.newRoute)
     if(Meteor.isServer) redirect(url, this.res)
@@ -46,5 +46,5 @@ function redirect (url, res) {
   })
 }
 
-navigate.beforeNavigate = new CustomEvent('beforeNavigate', {})
-navigate.navigate = new CustomEvent('navigate', {})
+navigate.enter = new CustomEvent('isoRouter-enter', {})
+navigate.navigate = new CustomEvent('isoRouter-navigate', {})

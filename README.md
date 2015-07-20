@@ -12,7 +12,7 @@ IsoRouter.route('/start')
       document.body
     )
   })
-  .before(function beforeStart (parameters, next) {
+  .enter(function enterStart (parameters, next) {
     Meteor.subscribe('someSub', next)
   })
   .exit(function clearBody () {
