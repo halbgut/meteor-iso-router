@@ -2,6 +2,11 @@ IsoRouter = {}
 
 IsoRouter.routes = []
 IsoRouter.Route = Route
+IsoRouter.navigate = navigate
+
+/* This is to replace the connect handlers, next argument on the client-side */
+IsoRouter.next = function next () {}
+
 
 IsoRouter.route = function isoRouterRoute (path) {
   return (
@@ -38,9 +43,6 @@ IsoRouter.serve = function isoRouterServe () {
     .call('action', parameters)
 }
 
-/* This is to replace the connect handlers, next argument on the client-side */
-IsoRouter.next = function next () {}
-
 eventTarget.addEventListener(
   'load',
   IsoRouter.serve.bind(IsoRouter)
@@ -59,11 +61,4 @@ eventTarget.addEventListener(
 if(Meteor.isServer) {
   /* Install the global listener */
   WebApp.connectHandlers.use(IsoRouter.serve.bind(IsoRouter))
-}
-
-function caller (key/*, args ... */) {
-  var args = _.rest(arguments)
-  return function (obj/*, rest ... */) {
-    return obj[key].apply(obj, args.concat(_.rest(arguments)))
-  }
 }
