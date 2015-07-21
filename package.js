@@ -1,20 +1,21 @@
 Package.describe({
   name: 'kriegslustig:iso-router',
   version: '0.0.1',
-  description: 'An isomorphic router for Meteor',
+  summary: 'An isomorphic router for Meteor',
   git: 'https://github.com/Kriegslustig/meteor-iso-router',
   documentation: 'README.md'
 })
 
 Package.onUse(function (api) {
+  api.versionsFrom('METEOR@1.1')
   Npm.depends({
     'path-to-regexp': '0.1.6'
   })
   api.use(['webapp', 'underscore'])
-  api.use('cosmos:browserify@0.3.0', 'client')
+  api.use('cosmos:browserify@0.3.0')
   api.addFiles(
     [
-      'lib/client.browserify.js',
+      'app.browserify.js',
       'lib/utils.js',
       'lib/events.js',
       'lib/route.js',
