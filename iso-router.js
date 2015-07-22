@@ -79,9 +79,10 @@ IsoRouter.serve = function isoRouterServe () {
   this.currentRoute = this.getRouteForUrl(this.location(params.req))
   if(!this.currentRoute) return params.next()
   if(Meteor.isServer) setConnectParams(arguments, this.currentRoute)
+  this.currentRoute.parameters = this.currentRoute.match(this.location(params.req))
   this.currentRoute
     .callAll('enter', this.currentRoute.parameters)
-    .call('action', parameters)
+    .call('action', this.currentRoute.parameters)
   return this
 }
 
