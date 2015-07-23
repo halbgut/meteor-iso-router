@@ -1,4 +1,5 @@
 /**
+ * This is the only object exported by this package. It contains all it's the API.
  * @namespace
  */
 IsoRouter = {}
@@ -11,30 +12,32 @@ IsoRouter = {}
 IsoRouter.routes = []
 
 /**
- * The prototype of all routes
+ * The prototype of all routes. You can access it to set global defaults. See {@link Route.enter}, {@link Route.action} and {@link Route.exit}.
  * @locus anywhere
  * @type {object}
  */
 IsoRouter.Route = Route
 
 /**
- * The navigate function
+ * With this function you can navigate to a cerain URL. You can't simply do a `location.href = '/internal/url'`. This will initiate a new HTTP request to that location. You have to go through this function. Server-side, this function does a [302]{@link https://tools.ietf.org/html/rfc7231#section-6.4.3} _redirect_. So you could use it for a moved page. When you URL schema changes you can simply use this to dynamically redirect the client. The URL is passed to the client by setting the `Location`-header. The function is called asynchronously using `_.defer`.
+ * @function
  * @locus anywhere
- * @type {function}
  * @param {string} url - The url to navigate to
+ * @param {301|302|307} [statusCode=302] - HTTP status code to respond with.
  */
 IsoRouter.navigate = navigate
 
-/**
- * This is to replace the connect handlers, next argument on the client-side
- * @locus anywhere
+/*
+ * This is to replace the connect handlers, next argument on the client-side.
+ * @locus client
  * @type {function}
  */
 IsoRouter.next = function next () {}
 
 
 /**
- * Creates a new iso-router route
+ * Creates a new iso-router route. It's created with {@link Route} as its prototype.
+ * @locus client
  * @param {string} path - The path-to-regex path the route is for
  * @return {Route} The newly created route
  */
@@ -50,7 +53,7 @@ IsoRouter.route = function isoRouterRoute (path) {
 }
 
 /**
- * Returns the first route with a path matching the passed url
+ * Returns the first route with a path matching the passed url.
  * @locus anywhere
  * @param {string} - A relative url
  * @return {Route} The matching route
