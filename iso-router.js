@@ -1,5 +1,6 @@
 /**
  * This is the only object exported by this package. It contains all it's the API.
+ * @locus anywhere
  * @namespace
  */
 IsoRouter = {}
