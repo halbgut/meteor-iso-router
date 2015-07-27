@@ -22,12 +22,3 @@ Tinytest.add('caller', function (test) {
   testFunc = caller('test', 1)
   test.isTrue(testFunc(testObj, 2), 'It should also pass the arguments passed to the new function')
 })
-
-Tinytest.add('isCalledGlobal', function (test) {
-  test.equal(typeof caller, 'function', 'utils.js should define a function called isCalledGlobal')
-  var testProto = {}
-  var testObj = Object.create(testProto)
-  test.isTrue(isCalledGlobal.call(testObj, testProto), 'It should return true when the passed parameter is a prototype of this.')
-  testObj = {}
-  test.isFalse(isCalledGlobal.call(testObj, testProto), 'It should return false when the passed parameter is not a prototype of this.')
-})
