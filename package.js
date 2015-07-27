@@ -44,6 +44,7 @@ Package.onTest(function (api) {
   api.addFiles([
     'tests/app.browserify.js',
     'tests/utils.js',
+    'tests/events.js',
     'tests/navigate.js',
   ])
 })
