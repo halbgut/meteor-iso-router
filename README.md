@@ -26,3 +26,6 @@ IsoRouter.route('/somthing.txt')
 ```
 
 [Check the API documentation for more info](https://github.com/Kriegslustig/meteor-iso-router/blob/master/DOCS.md)
+
+## TODO
+* Should I add a maximum recursion level for `shouldPrevent`
