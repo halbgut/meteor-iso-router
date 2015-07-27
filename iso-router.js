@@ -29,7 +29,7 @@ IsoRouter.navigate = navigate
 
 /*
  * This is to replace the connect handlers, next argument on the client-side.
- * @locus client
+ * @locus server
  * @type {function}
  */
 IsoRouter.next = function next () {}
