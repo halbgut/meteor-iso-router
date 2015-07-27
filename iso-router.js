@@ -28,13 +28,6 @@ IsoRouter.Route = Route
  */
 IsoRouter.navigate = navigate
 
-/*
- * This is to replace the connect handlers, next argument on the client-side.
- * @locus server
- * @type {function}
- */
-IsoRouter.next = function next () {}
-
 
 /**
  * Creates a new iso-router route. It's created with {@link Route} as its prototype.
@@ -79,14 +72,15 @@ IsoRouter.location = function (req) {
  * @return {{ ?req: connectHandle.req, ?res: connectHandle.res, ?next: connectHandle.next }} IsoRouter
  */
 IsoRouter.serve = function isoRouterServe () {
-  var params = setConnectParams(arguments)
-  this.currentRoute = this.getRouteForUrl(this.location(params.req))
-  if(!this.currentRoute) return params.next()
-  if(Meteor.isServer) setConnectParams(arguments, this.currentRoute)
-  this.currentRoute.parameters = this.currentRoute.match(this.location(params.req))
-  this.currentRoute
-    .callAll('enter', this.currentRoute.parameters)
-    .call('action', this.currentRoute.parameters)
+  var location = this.location(this.req)
+  var currentRoute = this.getRouteForUrl(location)
+  this.currentRoute = currentRoute
+  if(!currentRoute) return this.next()
+  setParams(currentRoute, this)
+  currentRoute.parameters = currentRoute.match(location)
+  currentRoute
+    .callAll('enter', currentRoute.parameters)
+    .call('action', currentRoute.parameters)
   return this
 }
 
@@ -107,5 +101,8 @@ eventTarget.addEventListener(
 
 if(Meteor.isServer) {
   /* Install the global listener */
-  WebApp.connectHandlers.use(IsoRouter.serve.bind(IsoRouter))
+  WebApp.connectHandlers.use(function () {
+    setParams(IsoRouter, arguments)
+    IsoRouter.navigate()
+  })
 }
