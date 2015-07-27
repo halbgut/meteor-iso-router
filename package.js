@@ -26,3 +26,9 @@ Package.onUse(function (api) {
   )
   api.export('IsoRouter')
 })
+
+Package.onTest(function (api) {
+  api.use(['kriegslustig:iso-router', 'tinytest'])
+  api.addFiles('lib/utils.js')
+  api.addFiles('tests/utils.js')
+})
