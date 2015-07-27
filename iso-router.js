@@ -59,7 +59,7 @@ IsoRouter.exit = function () {
   if(this.currentRoute) this.currentRoute.callAll('exit')
 }
 
-IsoRouter.location = function (req) {
+IsoRouter.location = function IsoRouterLocation (req) {
   return req ?
     req.url :
     location.pathname
@@ -71,7 +71,7 @@ IsoRouter.location = function (req) {
  * @return {{ ?req: connectHandle.req, ?res: connectHandle.res, ?next: connectHandle.next }} IsoRouter
  */
 IsoRouter.serve = function isoRouterServe () {
-  setParams(this, this)
+  if(Meteor.isClient) setParams({}, this)
   var location = this.location(this.req)
   var currentRoute = this.getRouteForUrl(location)
   this.currentRoute = currentRoute
@@ -101,7 +101,7 @@ eventTarget.addEventListener(
 
 if(Meteor.isServer) {
   /* Install the global listener */
-  WebApp.connectHandlers.use(function () {
+  WebApp.connectHandlers.use(function (req, res, next) {
     setParams(arguments, IsoRouter)
     IsoRouter.navigate()
   })
