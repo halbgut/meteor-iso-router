@@ -72,6 +72,7 @@ IsoRouter.location = function (req) {
  * @return {{ ?req: connectHandle.req, ?res: connectHandle.res, ?next: connectHandle.next }} IsoRouter
  */
 IsoRouter.serve = function isoRouterServe () {
+  setParams(this, this)
   var location = this.location(this.req)
   var currentRoute = this.getRouteForUrl(location)
   this.currentRoute = currentRoute
