@@ -204,7 +204,7 @@ A function that is called when the client navigates to a route.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| params | <code>Array</code> | The array returned by pathRegex.exec |
+| params | <code>[pathToRegexMatch](#pathToRegexMatch)</code> | The array returned by pathRegex.exec |
 
 <a name="Route.enterHook"></a>
 ### Route.enterHook : <code>function</code>
@@ -214,7 +214,7 @@ The `enterHooks` of a route are callen before the action is called. When you set
 
 | Param | Type | Description |
 | --- | --- | --- |
-| params | <code>Array</code> | The array returned by pathRegex.exec |
+| params | <code>[pathToRegexMatch](#pathToRegexMatch)</code> | The array returned by pathRegex.exec |
 
 <a name="Route.exitHook"></a>
 ### Route.exitHook : <code>function</code>
