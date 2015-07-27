@@ -42,7 +42,8 @@ Package.onTest(function (api) {
     'iso-router.js'
   ])
   api.addFiles([
+    'tests/app.browserify.js',
     'tests/utils.js',
-    'tests/navigate.js'
+    'tests/navigate.js',
   ])
 })
