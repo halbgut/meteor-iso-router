@@ -28,7 +28,21 @@ Package.onUse(function (api) {
 })
 
 Package.onTest(function (api) {
-  api.use(['kriegslustig:iso-router', 'tinytest'])
-  api.addFiles('lib/utils.js')
-  api.addFiles('tests/utils.js')
+  api.use(['kriegslustig:iso-router', 'tinytest', 'http', 'underscore', 'webapp'])
+  api.use('cosmos:browserify@0.3.0')
+  Npm.depends({
+    'path-to-regexp': '0.1.6'
+  })
+  api.addFiles([
+    'app.browserify.js',
+    'lib/utils.js',
+    'lib/events.js',
+    'lib/route.js',
+    'lib/navigate.js',
+    'iso-router.js'
+  ])
+  api.addFiles([
+    'tests/utils.js',
+    'tests/navigate.js'
+  ])
 })
