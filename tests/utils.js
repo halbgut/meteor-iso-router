@@ -27,7 +27,7 @@ Tinytest.add('isCalledGlobal', function (test) {
   test.equal(typeof caller, 'function', 'utils.js should define a function called isCalledGlobal')
   var testProto = {}
   var testObj = Object.create(testProto)
-  test.isTrue(isCalledGlobal.call(testProto, testObj), 'It should return true when the passed parameter is a prototype of this.')
+  test.isTrue(isCalledGlobal.call(testObj, testProto), 'It should return true when the passed parameter is a prototype of this.')
   testObj = {}
-  test.isTrue(isCalledGlobal.call(testProto, testObj), 'It should return false when the passed parameter is not a prototype of this.')
+  test.isTrue(isCalledGlobal.call(testObj, testProto), 'It should return false when the passed parameter is not a prototype of this.')
 })
