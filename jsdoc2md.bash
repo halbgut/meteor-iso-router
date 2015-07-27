@@ -1,1 +1,1 @@
-jsdoc2md iso-router.js app.browserify.js lib/*.js >> DOCS.md
+jsdoc2md iso-router.js app.browserify.js lib/*.js > DOCS.md
