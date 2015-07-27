@@ -1,0 +1,1 @@
+jsdoc2md iso-router.js app.browserify.js lib/*.js >> README.md
