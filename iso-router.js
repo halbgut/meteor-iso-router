@@ -28,7 +28,6 @@ IsoRouter.Route = Route
  */
 IsoRouter.navigate = navigate
 
-
 /**
  * Creates a new iso-router route. It's created with {@link Route} as its prototype.
  * @locus client
@@ -77,7 +76,7 @@ IsoRouter.serve = function isoRouterServe () {
   var currentRoute = this.getRouteForUrl(location)
   this.currentRoute = currentRoute
   if(!currentRoute) return this.next()
-  setParams(currentRoute, this)
+  setParams(this, currentRoute)
   currentRoute.parameters = currentRoute.match(location)
   currentRoute
     .callAll('enter', currentRoute.parameters)
@@ -103,7 +102,7 @@ eventTarget.addEventListener(
 if(Meteor.isServer) {
   /* Install the global listener */
   WebApp.connectHandlers.use(function () {
-    setParams(IsoRouter, arguments)
+    setParams(arguments, IsoRouter)
     IsoRouter.navigate()
   })
 }
