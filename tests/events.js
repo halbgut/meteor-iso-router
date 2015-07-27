@@ -14,7 +14,6 @@ Tinytest.add('eventTarget', function (test) {
   test.equal(typeof eventTarget.addEventListener, 'function', 'It should have a function eventTarget.addEventListener')
   test.equal(typeof eventTarget.dispatchEvent, 'function', 'It should have a function eventTarget.dispatchEvent')
   if(Meteor.isClient) {
-    console.log(eventTarget)
     test.isTrue(eventTarget.Number, 'It should be the window object on the client')
   }
 })
