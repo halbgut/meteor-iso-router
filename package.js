@@ -45,6 +45,7 @@ Package.onTest(function (api) {
     'tests/app.browserify.js',
     'tests/utils.js',
     'tests/events.js',
+    'tests/route.js',
     'tests/navigate.js',
   ])
 })
