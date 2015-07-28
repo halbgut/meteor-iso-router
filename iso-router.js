@@ -52,7 +52,12 @@ IsoRouter.route = function isoRouterRoute (path) {
  * @return {Route} The matching route
  */
 IsoRouter.getRouteForUrl = function isoRouterGetRouteForUrl (url) {
-  return _.find(this.routes, caller('match', url))
+  return _.last(
+    _.filter(
+      this.routes,
+      caller('match', url)
+    )
+  )
 }
 
 IsoRouter.exit = function () {
