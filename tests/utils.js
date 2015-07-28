@@ -22,3 +22,11 @@ Tinytest.add('caller', function (test) {
   testFunc = caller('test', 1)
   test.isTrue(testFunc(testObj, 2), 'It should also pass the arguments passed to the new function')
 })
+
+Tinytest.add('pushIf', function (test) {
+  test.equal(typeof pushIf, 'function', 'utils.js should define a function called pushIf')
+  var testArr = []
+  test.isTrue(pushIf(testArr, true)[0], 'It should add passed elements to the first argument')
+  test.equal(pushIf(testArr, true).length, 2, 'It should return the new array')
+  test.equal(pushIf(testArr, [true, true]).length, 4, 'It should also be able to handle arrays instead of elements')
+})
