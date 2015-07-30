@@ -1,4 +1,4 @@
-# iso-router - 0.0.2
+# iso-router - 0.0.3
 A Isomorphic Router for meteor
 
 ## Usage
