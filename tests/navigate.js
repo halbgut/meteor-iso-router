@@ -86,3 +86,11 @@ if(Meteor.isServer) {
     test.equal(resStub.ended, '', 'It should send back an empty payload')
   })
 }
+
+Tinytest.add('getPath', function (test) {
+  test.equal(getPath('http://tro.lololo.lo/asdf'), '/asdf', 'It should return the path name of a URL')
+  test.equal(getPath('http://tro.lololo.lo'), '/', 'It should return / if there\'s not path')
+    test.equal(getPath('trollolo.co/tet?q=1#asd'), '/tet?q=1#asd', 'It should also return the query string and hashfrags')
+    test.equal(getPath('tet?q=1#asd'), 'tet?q=1#asd', 'It should be able to handle relative urls')
+    test.equal(getPath('#asd'), '#asd', 'It should be able to handle relative urls')
+})
