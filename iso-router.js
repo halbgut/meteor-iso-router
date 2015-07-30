@@ -65,9 +65,7 @@ IsoRouter.exit = function () {
 }
 
 IsoRouter.location = function IsoRouterLocation (req) {
-  return req ?
-    req.url :
-    location.pathname
+  return (req && req.url) || location.href
 }
 
 /**
