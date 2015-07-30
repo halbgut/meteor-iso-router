@@ -55,7 +55,7 @@ IsoRouter.getRouteForUrl = function isoRouterGetRouteForUrl (url) {
   return _.last(
     _.filter(
       this.routes,
-      caller('match', getPath(url))
+      caller('match', getCleanPath(url))
     )
   )
 }
