@@ -1,6 +1,6 @@
 Package.describe({
   name: 'kriegslustig:iso-router',
-  version: '0.0.4',
+  version: '0.0.5',
   summary: 'An isomorphic router for Meteor',
   git: 'https://github.com/Kriegslustig/meteor-iso-router',
   documentation: 'README.md'
