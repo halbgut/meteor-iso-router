@@ -13,7 +13,7 @@ Tinytest.addAsync('IsoRouter.navigate', function (test, done) {
   if(Meteor.isClient) {
     IsoRouter.navigate('/test')
     _.defer(function () {
-      test.equal(IsoRouter.location(), '/test', 'IsoRouter should change the location to the passed argument')
+      test.isTrue(IsoRouter.location().indexOf('/test') > -1, 'IsoRouter should change the location to the passed argument')
     })
     HTTP.get('/redirect_me', function (err, res) {
       test.equal(res.content, 'HiLo', 'It should do a redirect server-side.')
@@ -94,6 +94,6 @@ Tinytest.add('getPath', function (test) {
   test.equal(getPath('http://tro.lololo.lo/asdf'), '/asdf', 'It should return the path name of a URL')
   test.equal(getPath('http://tro.lololo.lo'), '/', 'It should return / if there\'s not path')
     test.equal(getPath('trollolo.co/tet?q=1#asd'), '/tet?q=1#asd', 'It should also return the query string and hashfrags')
-    test.equal(getPath('tet?q=1#asd'), 'tet?q=1#asd', 'It should be able to handle relative urls')
+    test.equal(getPath('/tet?q=1#asd'), '/tet?q=1#asd', 'It should be able to handle relative urls')
     test.equal(getPath('#asd'), '#asd', 'It should be able to handle relative urls')
 })
