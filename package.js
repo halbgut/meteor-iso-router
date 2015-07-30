@@ -47,5 +47,6 @@ Package.onTest(function (api) {
     'tests/events.js',
     'tests/route.js',
     'tests/navigate.js',
+    'tests/iso-router.js'
   ])
 })
