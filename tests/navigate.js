@@ -36,24 +36,27 @@ if(Meteor.isClient) {
   Tinytest.add('shouldPrevent', function (test) {
     test.equal(typeof IsoRouter.navigate, 'function', 'There should be a function `shouldPrevent`')
     var simpleAnchor = elemStub({
-      tagName: 'A'
+      tagName: 'A',
+      href: '/'
     })
-    test.isTrue(shouldPrevent(simpleAnchor), 'It should return true if an a tag is passed')
+    test.isTrue(shouldPrevent(simpleAnchor, '/'), 'It should return true if an a tag is passed')
     var downloadAnchor = elemStub({
       tagName: 'A',
+      href:  '/',
       download: true
     })
-    test.isFalse(shouldPrevent(downloadAnchor), 'It should return false if the passed element has the download property set')
+    test.isFalse(shouldPrevent(downloadAnchor, '/'), 'It should return false if the passed element has the download property set')
     var elementInsideAnchor = elemStub({
       tagName: 'IMG',
       parentNode: elemStub({
         tagName: 'DIV',
         parentNode: elemStub({
+          href: '/',
           tagName: 'A'
         })
       })
     })
-    test.isTrue(shouldPrevent(elementInsideAnchor), 'It should return true if one the passed element has an anchor as a parent')
+    test.isTrue(shouldPrevent(elementInsideAnchor, '/'), 'It should return true if one the passed element has an anchor as a parent')
   })
 
   Tinytest.add('getHref', function (test) {
