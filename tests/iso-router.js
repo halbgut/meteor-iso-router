@@ -37,11 +37,11 @@ Tinytest.add('API: IsoRouter.getRouteForUrl', function (test) {
 Tinytest.add('IsoRouter.exit', function (test) {
   var isoRouter = Object.create(IsoRouter)
   var called = false
-  isoRouter.currentRoute = {
+  isoRouter.currentRoute.set({
     callAll: function (call) {
       called = call
     }
-  }
+  })
   isoRouter.exit()
   test.equal(called, 'exit', 'It should call currentRoute.callAll(\'exit\')')
 })

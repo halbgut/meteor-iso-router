@@ -13,6 +13,13 @@ IsoRouter = {}
 IsoRouter.routes = []
 
 /**
+ * The route the client is currently on. This is a reac
+ * @locus anywhere
+ * @type {ReactiveVar.<Route>}
+ */
+IsoRouter.currentRoute = new ReactiveVar()
+
+/**
  * The prototype of all routes. You can access it to set global defaults. See {@link Route.enter}, {@link Route.action} and {@link Route.exit}.
  * @locus anywhere
  * @type {object}
@@ -61,7 +68,8 @@ IsoRouter.getRouteForUrl = function isoRouterGetRouteForUrl (url) {
 }
 
 IsoRouter.exit = function () {
-  if(this.currentRoute) this.currentRoute.callAll('exit')
+  console.log(this.currentRoute)
+  if(this.currentRoute.get()) this.currentRoute.get().callAll('exit')
 }
 
 IsoRouter.location = function IsoRouterLocation (req) {
@@ -77,10 +85,11 @@ IsoRouter.serve = function isoRouterServe () {
   if(Meteor.isClient) setParams({}, this)
   var location = this.location(this.req)
   var currentRoute = this.getRouteForUrl(location)
-  this.currentRoute = currentRoute
+  this.currentRoute.set(currentRoute)
   if(!currentRoute) return this.next()
   setParams(this, currentRoute)
   currentRoute.parameters = currentRoute.match(location)
+  this.currentRoute.set(currentRoute)
   currentRoute
     .callAll('enter', currentRoute.parameters)
     .call('action', currentRoute.parameters)

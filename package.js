@@ -11,7 +11,7 @@ Package.onUse(function (api) {
   Npm.depends({
     'path-to-regexp': '0.1.6'
   })
-  api.use(['webapp', 'underscore'])
+  api.use(['webapp', 'underscore', 'reactive-var'])
   api.use('cosmos:browserify@0.3.0')
   api.addFiles(
     [
@@ -28,7 +28,7 @@ Package.onUse(function (api) {
 })
 
 Package.onTest(function (api) {
-  api.use(['kriegslustig:iso-router', 'tinytest', 'http', 'underscore', 'webapp'])
+  api.use(['kriegslustig:iso-router', 'tinytest', 'http', 'underscore', 'webapp', 'reactive-var'])
   api.use('cosmos:browserify@0.3.0')
   Npm.depends({
     'path-to-regexp': '0.1.6'
