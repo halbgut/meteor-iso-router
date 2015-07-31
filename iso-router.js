@@ -68,7 +68,6 @@ IsoRouter.getRouteForUrl = function isoRouterGetRouteForUrl (url) {
 }
 
 IsoRouter.exit = function () {
-  console.log(this.currentRoute)
   if(this.currentRoute.get()) this.currentRoute.get().callAll('exit')
 }
 
