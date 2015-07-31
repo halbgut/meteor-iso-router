@@ -40,6 +40,7 @@ This is the only object exported by this package. It contains all it's the API.
 
 * [IsoRouter](#IsoRouter) : <code>object</code>
   * [.routes](#IsoRouter.routes) : <code>[array.&lt;Route&gt;](#Route)</code>
+  * [.currentRoute](#IsoRouter.currentRoute) : <code>[ReactiveVar.&lt;Route&gt;](#Route)</code>
   * [.Route](#IsoRouter.Route) : <code>object</code>
   * [.navigate(url, [statusCode])](#IsoRouter.navigate)
   * [.route(path)](#IsoRouter.route) ⇒ <code>[Route](#Route)</code>
@@ -49,6 +50,12 @@ This is the only object exported by this package. It contains all it's the API.
 <a name="IsoRouter.routes"></a>
 ### IsoRouter.routes : <code>[array.&lt;Route&gt;](#Route)</code>
 All routes are saved inside this object
+
+**Kind**: static property of <code>[IsoRouter](#IsoRouter)</code>  
+**Locus**: anywhere  
+<a name="IsoRouter.currentRoute"></a>
+### IsoRouter.currentRoute : <code>[ReactiveVar.&lt;Route&gt;](#Route)</code>
+The route the client is currently on. This is a reac
 
 **Kind**: static property of <code>[IsoRouter](#IsoRouter)</code>  
 **Locus**: anywhere  
