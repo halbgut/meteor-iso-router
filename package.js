@@ -8,11 +8,11 @@ Package.describe({
 
 Package.onUse(function (api) {
   api.versionsFrom('METEOR@1.1')
+  api.use(['webapp', 'underscore', 'reactive-var'])
+  api.use('cosmos:browserify')
   Npm.depends({
     'path-to-regexp': '0.1.6'
   })
-  api.use(['webapp', 'underscore', 'reactive-var'])
-  api.use('cosmos:browserify@0.3.0')
   api.addFiles(
     [
       'app.browserify.js',
