@@ -1,5 +1,5 @@
 # iso-router - 0.0.9
-A Isomorphic Router for meteor
+An Isomorphic Router for meteor.
 
 ## Usage
 
@@ -28,4 +28,4 @@ IsoRouter.route('/somthing.txt')
 [Check the API documentation for more info](https://github.com/Kriegslustig/meteor-iso-router/blob/master/DOCS.md)
 
 ## TODO
-* Should I add a maximum recursion level for `shouldPrevent`
+* Should I add a maximum recursion level for `shouldPrevent`?
