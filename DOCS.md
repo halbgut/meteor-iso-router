@@ -1,7 +1,7 @@
 ## Objects
 <dl>
 <dt><a href="#IsoRouter">IsoRouter</a> : <code>object</code></dt>
-<dd><p>This is the only object exported by this package. It contains all it&#39;s the API.</p>
+<dd><p>This is the only object exported by this package. It contains all it&#39;s APIs.</p>
 </dd>
 <dt><a href="#Route">Route</a> : <code>object</code></dt>
 <dd></dd>
@@ -33,7 +33,7 @@ IsoRouter.navigate(&#39;/something/else&#39;)
 </dl>
 <a name="IsoRouter"></a>
 ## IsoRouter : <code>object</code>
-This is the only object exported by this package. It contains all it's the API.
+This is the only object exported by this package. It contains all it's APIs.
 
 **Kind**: global namespace  
 **Locus**: anywhere  
@@ -49,13 +49,13 @@ This is the only object exported by this package. It contains all it's the API.
 
 <a name="IsoRouter.routes"></a>
 ### IsoRouter.routes : <code>[array.&lt;Route&gt;](#Route)</code>
-All routes are saved inside this object
+All routes are saved inside this object.
 
 **Kind**: static property of <code>[IsoRouter](#IsoRouter)</code>  
 **Locus**: anywhere  
 <a name="IsoRouter.currentRoute"></a>
 ### IsoRouter.currentRoute : <code>[ReactiveVar.&lt;Route&gt;](#Route)</code>
-The route the client is currently on. This is a reac
+The route the client is currently on. This is a reactive variable.
 
 **Kind**: static property of <code>[IsoRouter](#IsoRouter)</code>  
 **Locus**: anywhere  
@@ -103,7 +103,7 @@ Returns the first route with a path matching the passed url.
 
 <a name="IsoRouter.serve"></a>
 ### IsoRouter.serve() ⇒ <code>Object</code>
-Serves a route. It first sets all connectHandle properties (req, res, next). Then it get's the current location and a matching route. If there's not route for the url `next` is called.
+Serves a route. It first sets all connectHandle properties (req, res, next). Then it gets the current location and a matching route. If there's no route for the url `next` is called.
 
 **Kind**: static method of <code>[IsoRouter](#IsoRouter)</code>  
 **Returns**: <code>Object</code> - IsoRouter  
@@ -129,49 +129,49 @@ Serves a route. It first sets all connectHandle properties (req, res, next). The
 
 <a name="Route.path"></a>
 ### Route.path : <code>string</code>
-The path the route is for
+The path the route is for.
 
 **Kind**: static property of <code>[Route](#Route)</code>  
 **Locus**: anywhere  
 <a name="Route.pathRegex"></a>
 ### Route.pathRegex : <code>regexp</code>
-The paresed regex for the path
+The parsed regex for the path.
 
 **Kind**: static property of <code>[Route](#Route)</code>  
 **Locus**: <code>anywhere</code>  
 <a name="Route.parameters"></a>
 ### Route.parameters : <code>array</code>
-The array returned by pathRegex.exec
+The array returned by pathRegex.exec.
 
 **Kind**: static property of <code>[Route](#Route)</code>  
 **Locus**: <code>anywhere</code>  
 <a name="Route.req"></a>
 ### Route.req : <code>connectHandle.req</code>
-The incomming request object
+The incomming request object.
 
 **Kind**: static property of <code>[Route](#Route)</code>  
 **Locus**: server  
 <a name="Route.res"></a>
 ### Route.res : <code>connectHandle.res</code>
-The connection's response object
+The connection's response object.
 
 **Kind**: static property of <code>[Route](#Route)</code>  
 **Locus**: server  
 <a name="Route.next"></a>
 ### Route.next : <code>connectHandle.next</code>
-The next middleware on the connection stack
+The next middleware on the connection stack.
 
 **Kind**: static property of <code>[Route](#Route)</code>  
 **Locus**: server  
 <a name="Route.action"></a>
 ### Route.action() : <code>[action](#Route.action)</code>
-Define an action that should be triggered when the route is called. This can also called on the global `IsoRouter.Route` This will set a default action.
+Define an action that's triggered when the route is called. This can also be called on the global `IsoRouter.Route` in order to set a default action.
 
 **Kind**: static method of <code>[Route](#Route)</code>  
 **Locus**: anywhere  
 <a name="Route.enter"></a>
 ### Route.enter(enter)
-Add enter hooks to the route. This can also called on the global `IsoRouter.Route`. It will add default hooks which will always be called.
+Add enter hooks to the route. This can also be called on the global `IsoRouter.Route` in order to add default hooks which will always be called.
 
 **Kind**: static method of <code>[Route](#Route)</code>  
 **Locus**: anywhere  
@@ -182,7 +182,7 @@ Add enter hooks to the route. This can also called on the global `IsoRouter.Rout
 
 <a name="Route.exit"></a>
 ### Route.exit(exit)
-Adds an exit hook. This can also called on the global `IsoRouter.Route`. It will add a default hook which will always be called.
+Adds an exit hook. This can also be called on the global `IsoRouter.Route` in order to add a default hook which will always be called.
 
 **Kind**: static method of <code>[Route](#Route)</code>  
 **Locus**: anywhere  
@@ -193,7 +193,7 @@ Adds an exit hook. This can also called on the global `IsoRouter.Route`. It will
 
 <a name="Route.match"></a>
 ### Route.match(url) ⇒ <code>false</code> &#124; <code>array</code>
-Calls pathRegex.exec
+Calls pathRegex.exec.
 
 **Kind**: static method of <code>[Route](#Route)</code>  
 **Returns**: <code>false</code> &#124; <code>array</code> - Returns false if the test fails and returns the exec's return on success  
@@ -225,12 +225,12 @@ The `enterHooks` of a route are callen before the action is called. When you set
 
 <a name="Route.exitHook"></a>
 ### Route.exitHook : <code>function</code>
-On the client `exitHook`s are called when a client navigates to an other route. When you set a global `exitHook` it will be triggered on each route. Even if the route has it's own.
+On the client `exitHook`s are called when a client navigates to a different route. If you set a global `exitHook` it will be triggered on each route. Even if the route has it's own `exitHook`.
 
 **Kind**: static typedef of <code>[Route](#Route)</code>  
 <a name="event_isoRouter-enter"></a>
 ## "isoRouter-enter"
-Triggers when the client enters a route
+Triggers when the client enters a route.
 
 **Kind**: event emitted  
 <a name="event_isoRouter-navigate"></a>
@@ -240,7 +240,7 @@ Triggers when the client has entered a route
 **Kind**: event emitted  
 <a name="connectHandle"></a>
 ## connectHandle : <code>object</code>
-An object defined by the `connect` npm package. Meteor uses this internally and I'm just hooking into it.
+An object defined by the `connect` npm package. Meteor uses this internally and iso-router is just hooking into it.
 
 **Kind**: global typedef  
 **Properties**
