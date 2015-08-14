@@ -42,13 +42,14 @@ IsoRouter.navigate = navigate
  * @return {Route} The newly created route
  */
 IsoRouter.route = function isoRouterRoute (path) {
+  var keys = []
   return (
     this.routes[this.routes.push(Object.create(Route)) - 1]
       .set('path', path)
       .set('pathRegex', function () {
-        this.parameters = []
-        return pathToRegexp(path, this.parameters)
+        return pathToRegexp(path, keys)
       })
+      .set('keys', keys)
   )
 }
 
@@ -87,7 +88,7 @@ IsoRouter.serve = function isoRouterServe () {
   this.currentRoute.set(currentRoute)
   if(!currentRoute) return this.next()
   setParams(this, currentRoute)
-  currentRoute.parameters = currentRoute.match(getCleanPath(location))
+  currentRoute.parameters = currentRoute.matchToObject(getCleanPath(location))
   this.currentRoute.set(currentRoute)
   currentRoute
     .callAll('enter', currentRoute.parameters)
