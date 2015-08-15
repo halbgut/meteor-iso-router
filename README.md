@@ -1,6 +1,13 @@
 # iso-router - 0.0.12
 A Isomorphic Router for meteor
 
+## Documentation
+The docs are split into two documents. First the guide, It's located below this section. It's still a work in progress. Then the [API documentation](https://github.com/Kriegslustig/meteor-iso-router/blob/master/DOCS.md). It documents _every_ object and function availible.
+
+## Guide
+
+Working on it.
+
 ## Usage
 
 ```js
@@ -24,8 +31,6 @@ IsoRouter.route('/somthing.txt')
     res.end('hi')
   })
 ```
-
-[Check the API documentation for more info](https://github.com/Kriegslustig/meteor-iso-router/blob/master/DOCS.md)
 
 ## TODO
 * Should I add a maximum recursion level for `shouldPrevent`
