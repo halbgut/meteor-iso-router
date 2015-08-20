@@ -56,30 +56,30 @@ Tinytest.add('Route.callAll', function (test) {
   var route = Object.create(Route)
   test.equal(typeof Route.callAll, 'function', 'Route should hava a function called callAll')
   test.isTrue(isRoute(route.callAll()), 'It should return a route')
-  var shouldBeTrue = false
-  var shouldBeFalse = true
+  var shouldBe3 = 0
+  var shouldBe6 = true
   route._testValue = [
     function (next) {
-      shouldBeTrue = false
+      shouldBeTrue += 1
       next()
     },
     function (next) {
-      shouldBeTrue = true
+      shouldBeTrue += 2
       next()
     }
   ]
-  test.isTrue((route.callAll('test') && shouldBeTrue), 'It should call all functions inside _[key]Value')
+  test.isEqual(shouldBe3, 3, 'It should call all functions inside _[key]Value')
   Route._testGlobalValue = [
     function (next) {
-      shouldBeFalse = true
+      shouldBeFalse += 1
       next()
     },
     function (next) {
-      shouldBeFalse = false
+      shouldBeFalse += 2
       next()
     }
   ]
-  test.isTrue((route.callAll('test') && !shouldBeFalse), 'It should also call all functions inside _[key]GlobalValue')
+  test.isTrue(shouldBe6, 6, 'It should also call all functions inside _[key]GlobalValue')
   shouldAlsoBeTrue = false
   route._test2Value = [function (val) {
     shouldAlsoBeTrue = val
