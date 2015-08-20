@@ -30,6 +30,15 @@ IsoRouter.navigate(&#39;/something/else&#39;)
 <pre><code class="lang-js">[ &#39;/something/else&#39;, &#39;something&#39;, &#39;else&#39; ]
 </code></pre>
 </dd>
+<dt><a href="#action">action</a> : <code>function</code></dt>
+<dd><p>A function that is called when the client navigates to a route.</p>
+</dd>
+<dt><a href="#enterHook">enterHook</a> : <code>function</code></dt>
+<dd><p>The <code>enterHooks</code> of a route are called before the action is called. When you set global <code>enterHooks</code> they will be triggered on each route. Even if the route has it&#39;s own. These hooks are executed asynchronously. For that purpose a parameter <code>next</code> is passed. It must be called in order to trigger the next enter hook. It must also be called on the last enter hook for the <code>action</code> to be called.</p>
+</dd>
+<dt><a href="#exitHook">exitHook</a> : <code>function</code></dt>
+<dd><p>On the client <code>exitHook</code>s are called when a client navigates to an other route. When you set a global <code>exitHook</code> it will be triggered on each route. Even if the route has it&#39;s own.</p>
+</dd>
 </dl>
 <a name="IsoRouter"></a>
 ## IsoRouter : <code>object</code>
@@ -120,14 +129,11 @@ Serves a route. It first sets all connectHandle properties (req, res, next). The
   * [.req](#Route.req) : <code>connectHandle.req</code>
   * [.res](#Route.res) : <code>connectHandle.res</code>
   * [.next](#Route.next) : <code>connectHandle.next</code>
-  * [.action()](#Route.action) : <code>[action](#Route.action)</code>
-  * [.enter(enter)](#Route.enter)
-  * [.exit(exit)](#Route.exit)
+  * [.action(action)](#Route.action) ⇒ <code>[Route](#Route)</code>
+  * [.enter(enter)](#Route.enter) ⇒ <code>[Route](#Route)</code>
+  * [.exit(exit)](#Route.exit) ⇒ <code>[Route](#Route)</code>
   * [.match(url)](#Route.match) ⇒ <code>false</code> &#124; <code>array</code>
   * [.matchToObject(url)](#Route.matchToObject) ⇒ <code>object</code> &#124; <code>false</code>
-  * [.action](#Route.action) : <code>function</code>
-  * [.enterHook](#Route.enterHook) : <code>function</code>
-  * [.exitHook](#Route.exitHook) : <code>function</code>
 
 <a name="Route.path"></a>
 ### Route.path : <code>string</code>
@@ -172,13 +178,18 @@ The next middleware on the connection stack
 **Kind**: static property of <code>[Route](#Route)</code>  
 **Locus**: server  
 <a name="Route.action"></a>
-### Route.action() : <code>[action](#Route.action)</code>
+### Route.action(action) ⇒ <code>[Route](#Route)</code>
 Define an action that should be triggered when the route is called. This can also called on the global `IsoRouter.Route` This will set a default action.
 
 **Kind**: static method of <code>[Route](#Route)</code>  
 **Locus**: anywhere  
+
+| Param | Type |
+| --- | --- |
+| action | <code>[action](#action)</code> | 
+
 <a name="Route.enter"></a>
-### Route.enter(enter)
+### Route.enter(enter) ⇒ <code>[Route](#Route)</code>
 Add enter hooks to the route. This can also called on the global `IsoRouter.Route`. It will add default hooks which will always be called.
 
 **Kind**: static method of <code>[Route](#Route)</code>  
@@ -186,10 +197,10 @@ Add enter hooks to the route. This can also called on the global `IsoRouter.Rout
 
 | Param | Type | Description |
 | --- | --- | --- |
-| enter | <code>[enterHook](#Route.enterHook)</code> | An enter hook to be added to the route |
+| enter | <code>[enterHook](#enterHook)</code> | An enter hook to be added to the route |
 
 <a name="Route.exit"></a>
-### Route.exit(exit)
+### Route.exit(exit) ⇒ <code>[Route](#Route)</code>
 Adds an exit hook. This can also called on the global `IsoRouter.Route`. It will add a default hook which will always be called.
 
 **Kind**: static method of <code>[Route](#Route)</code>  
@@ -197,7 +208,7 @@ Adds an exit hook. This can also called on the global `IsoRouter.Route`. It will
 
 | Param | Type | Description |
 | --- | --- | --- |
-| exit | <code>[exitHook](#Route.exitHook)</code> | The exit hook to add |
+| exit | <code>[exitHook](#exitHook)</code> | The exit hook to add |
 
 <a name="Route.match"></a>
 ### Route.match(url) ⇒ <code>false</code> &#124; <code>array</code>
@@ -222,31 +233,6 @@ Calls route.match and maps the resulting array to the parameter names in the rou
 | --- | --- |
 | url | <code>string</code> | 
 
-<a name="Route.action"></a>
-### Route.action : <code>function</code>
-A function that is called when the client navigates to a route.
-
-**Kind**: static typedef of <code>[Route](#Route)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| params | <code>[pathToRegexMatch](#pathToRegexMatch)</code> | The array returned by pathRegex.exec |
-
-<a name="Route.enterHook"></a>
-### Route.enterHook : <code>function</code>
-The `enterHooks` of a route are callen before the action is called. When you set global `enterHooks` they will be triggered on each route. Even if the route has it's own.
-
-**Kind**: static typedef of <code>[Route](#Route)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| params | <code>[pathToRegexMatch](#pathToRegexMatch)</code> | The array returned by pathRegex.exec |
-
-<a name="Route.exitHook"></a>
-### Route.exitHook : <code>function</code>
-On the client `exitHook`s are called when a client navigates to an other route. When you set a global `exitHook` it will be triggered on each route. Even if the route has it's own.
-
-**Kind**: static typedef of <code>[Route](#Route)</code>  
 <a name="event_isoRouter-enter"></a>
 ## "isoRouter-enter"
 Triggers when the client enters a route
@@ -287,3 +273,34 @@ This will log the following:
 ```
 
 **Kind**: global typedef  
+<a name="action"></a>
+## action : <code>function</code>
+A function that is called when the client navigates to a route.
+
+**Kind**: global typedef  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>[pathToRegexMatch](#pathToRegexMatch)</code> | The array returned by pathRegex.exec |
+
+<a name="enterHook"></a>
+## enterHook : <code>function</code>
+The `enterHooks` of a route are called before the action is called. When you set global `enterHooks` they will be triggered on each route. Even if the route has it's own. These hooks are executed asynchronously. For that purpose a parameter `next` is passed. It must be called in order to trigger the next enter hook. It must also be called on the last enter hook for the `action` to be called.
+
+**Kind**: global typedef  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>[pathToRegexMatch](#pathToRegexMatch)</code> | The array returned by pathRegex.exec |
+| params | <code>next</code> | The next `enter` hook to be called |
+
+<a name="exitHook"></a>
+## exitHook : <code>function</code>
+On the client `exitHook`s are called when a client navigates to an other route. When you set a global `exitHook` it will be triggered on each route. Even if the route has it's own.
+
+**Kind**: global typedef  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>next</code> | The next `exit` hook to be called |
+
