@@ -91,8 +91,15 @@ IsoRouter.serve = function isoRouterServe () {
   currentRoute.parameters = currentRoute.matchToObject(getCleanPath(location))
   this.currentRoute.set(currentRoute)
   currentRoute
-    .callAll('enter', currentRoute.parameters)
-    .call('action', currentRoute.parameters)
+    .callAll(
+      'enter',
+      currentRoute.parameters,
+      currentRoute.call.bind(
+        currentRoute,
+        'action',
+        currentRoute.parameters
+      )
+  )
   return this
 }
 
