@@ -25,7 +25,7 @@ Tinytest.addAsync('IsoRouter.navigate', function (test, done) {
         IsoRouter.navigate('/downlow')
       })
     IsoRouter.route('/downlow')
-      .action (function () {
+      .action(function () {
         this.res.end('HiLo')
       })
     done()

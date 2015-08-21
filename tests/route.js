@@ -16,7 +16,7 @@ Tinytest.add('Route.enter', function (test) {
   test.equal(typeof route.enter, 'function', 'Route should have a function enter')
   test.isTrue(isRoute(route.enter(function () {})), 'It should return the route that it\'s beeing called on.')
   test.equal(route._enterValue.length, 1, 'It should push the passed functions to Route._enterValue')
-  Route.enter(function () {})
+  Route.enter(function (params, next) {next()})
   test.equal(route._enterGlobalValue.length, 1, 'It should add the enter hooks to _enterGlobalValue if it\'s called on the global object')
 })
 
