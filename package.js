@@ -7,7 +7,7 @@ Package.describe({
 })
 
 Package.onUse(function (api) {
-  api.versionsFrom('METEOR@1.1')
+  api.versionsFrom('METEOR@1.2')
   api.use(['webapp', 'underscore', 'reactive-var'])
   api.use('cosmos:browserify@0.3.0')
   Npm.depends({
