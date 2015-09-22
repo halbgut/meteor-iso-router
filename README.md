@@ -33,4 +33,4 @@ IsoRouter.route('/somthing.txt')
 ```
 
 ## TODO
-* Should I add a maximum recursion level for `shouldPrevent`
+* ES6ify
