@@ -18,8 +18,8 @@ Package.onUse(function (api) {
       'app.browserify.js',
       'lib/utils.js',
       'lib/events.js',
-      'lib/route.js',
       'lib/navigate.js',
+      'lib/route.js',
       'iso-router.js'
     ],
     ['server', 'client']
@@ -37,16 +37,16 @@ Package.onTest(function (api) {
     'app.browserify.js',
     'lib/utils.js',
     'lib/events.js',
-    'lib/route.js',
     'lib/navigate.js',
+    'lib/route.js',
     'iso-router.js'
   ])
   api.addFiles([
     'tests/app.browserify.js',
     'tests/utils.js',
     'tests/events.js',
-    'tests/route.js',
     'tests/navigate.js',
+    'tests/route.js',
     'tests/iso-router.js'
   ])
 })

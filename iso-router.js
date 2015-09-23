@@ -14,10 +14,10 @@ IsoRouter.routes = []
 
 /**
  * The route the client is currently on. This is a reac
- * @locus anywhere
+ * @locus client
  * @type {ReactiveVar.<Route>}
  */
-IsoRouter.currentRoute = new ReactiveVar()
+if(Meteor.isClient) IsoRouter.currentRoute = new ReactiveVar()
 
 /**
  * The prototype of all routes. You can access it to set global defaults. See {@link Route.enter}, {@link Route.action} and {@link Route.exit}.
@@ -25,15 +25,6 @@ IsoRouter.currentRoute = new ReactiveVar()
  * @type {object}
  */
 IsoRouter.Route = Route
-
-/**
- * With this function you can navigate to a cerain URL. You can't simply do a `location.href = '/internal/url'`. This will initiate a new HTTP request to that location. You have to go through this function. Server-side, this function does a [302]{@link https://tools.ietf.org/html/rfc7231#section-6.4.3} _redirect_. So you could use it for a moved page. When you URL schema changes you can simply use this to dynamically redirect the client. The URL is passed to the client by setting the `Location`-header. The function is called asynchronously using `_.defer`.
- * @function
- * @locus anywhere
- * @param {string} url - The url to navigate to
- * @param {301|302|307} [statusCode=302] - HTTP status code to respond with.
- */
-IsoRouter.navigate = navigate
 
 /**
  * Creates a new iso-router route. It's created with {@link Route} as its prototype.
@@ -69,7 +60,7 @@ IsoRouter.getRouteForUrl = function isoRouterGetRouteForUrl (url) {
 }
 
 IsoRouter.exit = function () {
-  if(this.currentRoute.get()) this.currentRoute.get().callAll('exit')
+  if(this.currentRoute && this.currentRoute.get()) this.currentRoute.get().callAll('exit')
 }
 
 IsoRouter.location = function IsoRouterLocation (req) {
@@ -81,25 +72,23 @@ IsoRouter.location = function IsoRouterLocation (req) {
  * @locus anywhere
  * @return {{ ?req: connectHandle.req, ?res: connectHandle.res, ?next: connectHandle.next }} IsoRouter
  */
-IsoRouter.serve = function isoRouterServe () {
-  if(Meteor.isClient) setParams({}, this)
-  var location = this.location(this.req)
-  var currentRoute = this.getRouteForUrl(location)
-  this.currentRoute.set(currentRoute)
-  if(!currentRoute) return this.next()
-  setParams(this, currentRoute)
-  currentRoute.parameters = currentRoute.matchToObject(getCleanPath(location))
-  this.currentRoute.set(currentRoute)
-  currentRoute
+IsoRouter.serve = function isoRouterServe (req, res, next) {
+  var location = this.location(req)
+  var route = Object.create(this.getRouteForUrl(location) || this.Route)
+  setParams(arguments, route)
+
+  route.parameters = route.matchToObject(getCleanPath(location))
+  if(Meteor.isClient) this.currentRoute.set(route)
+  route
     .callAll(
       'enter',
-      currentRoute.parameters,
-      currentRoute.call.bind(
-        currentRoute,
+      route.parameters,
+      route.call.bind(
+        route,
         'action',
-        currentRoute.parameters
+        route.parameters
       )
-  )
+    )
   return this
 }
 
@@ -120,23 +109,5 @@ eventTarget.addEventListener(
 
 if(Meteor.isServer) {
   /* Install the global listener */
-  WebApp.connectHandlers.use(function (req, res, next) {
-    setParams(arguments, IsoRouter)
-    IsoRouter.navigate()
-  })
-
-  _.defer(() => {
-    WebApp.connectHandlers.use(function (req, res, next) {
-      if(IsoRouter.currentRoute.get()) return
-      IsoRouter.Route.callAll(
-        'enter',
-        IsoRouter.Route.parameters,
-        IsoRouter.Route.call.bind(
-          IsoRouter.Route,
-          'action',
-          IsoRouter.Route.parameters
-        )
-      )
-    })
-  })
+  WebApp.connectHandlers.use(IsoRouter.serve.bind(IsoRouter))
 }

@@ -9,9 +9,8 @@ function elemStub (attributes) {
 }
 
 Tinytest.addAsync('IsoRouter.navigate', function (test, done) {
-  test.equal(typeof IsoRouter.navigate, 'function', 'IsoRouter should have a property navigate which is a function')
   if(Meteor.isClient) {
-    IsoRouter.navigate('/test')
+    IsoRouter.currentRoute.get().navigate('/test')
     _.defer(function () {
       test.isTrue(IsoRouter.location().indexOf('/test') > -1, 'IsoRouter should change the location to the passed argument')
     })
@@ -22,7 +21,7 @@ Tinytest.addAsync('IsoRouter.navigate', function (test, done) {
   } else {
     IsoRouter.route('/redirect_me')
       .action(function () {
-        IsoRouter.navigate('/downlow')
+        this.navigate('/downlow')
       })
     IsoRouter.route('/downlow')
       .action(function () {

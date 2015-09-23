@@ -10,10 +10,6 @@ Tinytest.add('API: IsoRouter.Route', function (test) {
   test.equal(typeof IsoRouter.Route.exit, typeof Route.exit, 'IsoRouter.Route should map to Route')
 })
 
-Tinytest.add('API: IsoRouter.navigate', function (test) {
-  test.equal(typeof IsoRouter.navigate, 'function', 'IsoRouter.navigate should map to navigate')
-})
-
 Tinytest.add('API: IsoRouter.route', function (test) {
   test.equal(typeof IsoRouter.route, 'function', 'IsoRouter should have a function route')
   test.isTrue(isRoute(IsoRouter.route('/testroute')), 'It should return a new route')
@@ -34,14 +30,16 @@ Tinytest.add('API: IsoRouter.getRouteForUrl', function (test) {
   test.equal(IsoRouter.getRouteForUrl('/getRouteForUrl/trollz/yolo').path, '/getRouteForUrl/trollz/yolo')
 })
 
-Tinytest.add('IsoRouter.exit', function (test) {
-  var isoRouter = Object.create(IsoRouter)
-  var called = false
-  isoRouter.currentRoute.set({
-    callAll: function (call) {
-      called = call
-    }
+if(Meteor.isClient) {
+  Tinytest.add('IsoRouter.exit', function (test) {
+    var isoRouter = Object.create(IsoRouter)
+    var called = false
+    isoRouter.currentRoute.set({
+      callAll: function (call) {
+        called = call
+      }
+    })
+    isoRouter.exit()
+    test.equal(called, 'exit', 'It should call currentRoute.callAll(\'exit\')')
   })
-  isoRouter.exit()
-  test.equal(called, 'exit', 'It should call currentRoute.callAll(\'exit\')')
-})
+}
