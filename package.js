@@ -8,7 +8,7 @@ Package.describe({
 
 Package.onUse(function (api) {
   api.versionsFrom('METEOR@1.2')
-  api.use(['webapp', 'underscore', 'reactive-var'])
+  api.use(['ecmascript', 'webapp', 'underscore', 'reactive-var'])
   api.use('cosmos:browserify@0.3.0')
   Npm.depends({
     'path-to-regexp': '0.1.6'
@@ -28,7 +28,7 @@ Package.onUse(function (api) {
 })
 
 Package.onTest(function (api) {
-  api.use(['kriegslustig:iso-router', 'tinytest', 'http', 'underscore', 'webapp', 'reactive-var'])
+  api.use(['kriegslustig:iso-router', 'ecmascript', 'tinytest', 'http', 'underscore', 'webapp', 'reactive-var'])
   api.use('cosmos:browserify@0.3.0')
   Npm.depends({
     'path-to-regexp': '0.1.6'

@@ -124,4 +124,19 @@ if(Meteor.isServer) {
     setParams(arguments, IsoRouter)
     IsoRouter.navigate()
   })
+
+  _.defer(() => {
+    WebApp.connectHandlers.use(function (req, res, next) {
+      if(IsoRouter.currentRoute.get()) return
+      IsoRouter.Route.callAll(
+        'enter',
+        IsoRouter.Route.parameters,
+        IsoRouter.Route.call.bind(
+          IsoRouter.Route,
+          'action',
+          IsoRouter.Route.parameters
+        )
+      )
+    })
+  })
 }
