@@ -24,7 +24,16 @@ if(Meteor.isClient) IsoRouter.currentRoute = new ReactiveVar()
  * @locus anywhere
  * @type {object}
  */
-IsoRouter.Route = Route
+IsoRouter.Route = Object.create(Route)
+
+/**
+ * With this function you can navigate to a cerain URL. You can't simply do a `location.href = '/internal/url'`. This will initiate a new HTTP request to that location. You have to go through this function. Server-side, this function does a [302]{@link https://tools.ietf.org/html/rfc7231#section-6.4.3} _redirect_. So you could use it for a moved page. When you URL schema changes you can simply use this to dynamically redirect the client. The URL is passed to the client by setting the `Location`-header. The function is called asynchronously using `_.defer`.
+ * @function
+ * @locus anywhere
+ * @param {string} url - The url to navigate to
+ * @param {navigateEvent} navigateEvent - Required on the server side
+ */
+IsoRouter.navigate = navigate
 
 /**
  * Creates a new iso-router route. It's created with {@link Route} as its prototype.
@@ -51,63 +60,63 @@ IsoRouter.route = function isoRouterRoute (path) {
  * @return {Route} The matching route
  */
 IsoRouter.getRouteForUrl = function isoRouterGetRouteForUrl (url) {
-  return _.last(
-    _.filter(
-      this.routes,
-      caller('match', getCleanPath(url))
+  return (
+    _.last(
+      _.filter(
+        this.routes,
+        caller('match', getCleanPath(url))
+      )
     )
+    || this.Route
   )
 }
 
-IsoRouter.exit = function () {
-  if(this.currentRoute && this.currentRoute.get()) this.currentRoute.get().callAll('exit')
+IsoRouter.location = function IsoRouterLocation (req) {
+  return (this.req && req.url) || location.href
 }
 
-IsoRouter.location = function IsoRouterLocation (req) {
-  return (req && req.url) || location.href
+IsoRouter.events = {
+  enter: 'isoRouter-enter',
+  exit: 'isoRouter-exit'
 }
 
 /**
- * Serves a route. It first sets all connectHandle properties (req, res, next). Then it get's the current location and a matching route. If there's not route for the url `next` is called.
- * @locus anywhere
- * @return {{ ?req: connectHandle.req, ?res: connectHandle.res, ?next: connectHandle.next }} IsoRouter
+ * Triggers when the client enters a route
+ * @event isoRouter-enter
  */
-IsoRouter.serve = function isoRouterServe (req, res, next) {
-  var location = this.location(req)
-  var route = Object.create(this.getRouteForUrl(location) || this.Route)
-  setParams(arguments, route)
-
-  route.parameters = route.matchToObject(getCleanPath(location))
-  if(Meteor.isClient) this.currentRoute.set(route)
-  route
-    .callAll(
-      'enter',
-      route.parameters,
-      route.call.bind(
-        route,
-        'action',
-        route.parameters
-      )
-    )
-  return this
+IsoRouter.dispatchEnter = function IsoRouterDispatchEnter (req, res, next) {
+  let route = Object.create(IsoRouter.getRouteForUrl(IsoRouter.location(req)))
+  createEvent(IsoRouter.events.enter, {
+    request,
+    response,
+    next,
+    route,
+    parameters: route.matchToObject(getCleanPath(request.url))
+  })
 }
+
+/**
+ * Triggers when the client has entered a route
+ * @event isoRouter-exit
+ */
+IsoRouter.dispatchExit = function IsoRouterDispatchExit (req, res, next) {
+  let route = Object.create(IsoRouter.getRouteForUrl(IsoRouter.location(req)))
+  createEvent(IsoRouter.events.exit, {
+    request,
+    response,
+    next,
+    route,
+    parameters: route.matchToObject(getCleanPath(request.url))
+  })
+}
+
 
 eventTarget.addEventListener(
   'load',
-  IsoRouter.serve.bind(IsoRouter)
-)
-
-eventTarget.addEventListener(
-  'isoRouter-enter',
-  IsoRouter.exit.bind(IsoRouter)
-)
-
-eventTarget.addEventListener(
-  'isoRouter-navigate',
-  IsoRouter.serve.bind(IsoRouter)
+  IsoRouter.dispatchEnter
 )
 
 if(Meteor.isServer) {
   /* Install the global listener */
-  WebApp.connectHandlers.use(IsoRouter.serve.bind(IsoRouter))
+  WebApp.connectHandlers.use(IsoRouter.dispatchEnter)
 }
