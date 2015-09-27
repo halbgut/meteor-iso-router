@@ -31,7 +31,6 @@ IsoRouter.events = {
  */
 IsoRouter.Route = Object.create(Route)
 IsoRouter.Route.addListener('enter', (e) => {
-  console.log('enter')
   if(e.next) e.next()
 })
 
@@ -95,7 +94,7 @@ IsoRouter.dispatchEnter = function IsoRouterDispatchEnter (request, response, ne
     response,
     next,
     route,
-    parameters: route.matchToObject(getCleanPath(request.url))
+    parameters: route.matchToObject(getCleanPath(IsoRouter.location(request)))
   })
 }
 
@@ -110,7 +109,7 @@ IsoRouter.dispatchExit = function IsoRouterDispatchExit (request, response, next
     response,
     next,
     route,
-    parameters: route.matchToObject(getCleanPath(request.url))
+    parameters: route.matchToObject(getCleanPath(IsoRouter.location(request)))
   })
 }
 
