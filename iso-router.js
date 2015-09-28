@@ -30,8 +30,10 @@ IsoRouter.events = {
  * @type {object}
  */
 IsoRouter.Route = Object.create(Route)
-IsoRouter.Route.addListener('enter', (e) => {
-  if(e.next) e.next()
+_.defer(() => {
+  IsoRouter.Route.addListener('enter', (e) => {
+    if(e.next) e.next()
+  })
 })
 
 /**
