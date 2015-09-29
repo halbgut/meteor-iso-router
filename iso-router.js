@@ -30,8 +30,10 @@ IsoRouter.events = {
  * @type {object}
  */
 IsoRouter.Route = Object.create(Route)
+// TODO: Document this *really* well. It would be nicer if I didn't have to do this
 _.defer(() => {
   IsoRouter.Route.addListener('enter', (e) => {
+    // TODO: Check wether or not the headers have been sent
     if(e.next) e.next()
   })
 })
@@ -90,14 +92,7 @@ IsoRouter.location = function IsoRouterLocation (req) {
  * @event isoRouter-enter
  */
 IsoRouter.dispatchEnter = function IsoRouterDispatchEnter (request, response, next) {
-  let route = Object.create(IsoRouter.getRouteForUrl(IsoRouter.location(request)))
-  dispatchEvent(IsoRouter.events.enter, {
-    request,
-    response,
-    next,
-    route,
-    parameters: route.matchToObject(getCleanPath(IsoRouter.location(request)))
-  })
+  dispatchEvent(IsoRouter.events.enter, generateEventParameters.apply(null, arguments)))
 }
 
 /**
@@ -105,14 +100,7 @@ IsoRouter.dispatchEnter = function IsoRouterDispatchEnter (request, response, ne
  * @event isoRouter-exit
  */
 IsoRouter.dispatchExit = function IsoRouterDispatchExit (request, response, next) {
-  let route = Object.create(IsoRouter.getRouteForUrl(IsoRouter.location(request)))
-  dispatchEvent(IsoRouter.events.exit, {
-    request,
-    response,
-    next,
-    route,
-    parameters: route.matchToObject(getCleanPath(IsoRouter.location(request)))
-  })
+  dispatchEvent(IsoRouter.events.exit, generateEventParameters.apply(null, arguments))
 }
 
 
