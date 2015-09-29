@@ -38,6 +38,12 @@ _.defer(() => {
   })
 })
 
+if(Meteor.isClient) {
+  IsoRouter.Route.addListener('enter', (e) => {
+    IsoRouter.currentRoute.set(e.route)
+  })
+}
+
 /**
  * With this function you can navigate to a cerain URL. You can't simply do a `location.href = '/internal/url'`. This will initiate a new HTTP request to that location. You have to go through this function. Server-side, this function does a [302]{@link https://tools.ietf.org/html/rfc7231#section-6.4.3} _redirect_. So you could use it for a moved page. When you URL schema changes you can simply use this to dynamically redirect the client. The URL is passed to the client by setting the `Location`-header. The function is called asynchronously using `_.defer`.
  * @function
@@ -92,7 +98,7 @@ IsoRouter.location = function IsoRouterLocation (req) {
  * @event isoRouter-enter
  */
 IsoRouter.dispatchEnter = function IsoRouterDispatchEnter (request, response, next) {
-  dispatchEvent(IsoRouter.events.enter, generateEventParameters.apply(null, arguments)))
+  dispatchEvent(IsoRouter.events.enter, generateEventParameters.apply(null, arguments))
 }
 
 /**
