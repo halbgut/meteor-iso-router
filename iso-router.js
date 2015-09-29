@@ -33,8 +33,7 @@ IsoRouter.Route = Object.create(Route)
 // TODO: Document this *really* well. It would be nicer if I didn't have to do this
 _.defer(() => {
   IsoRouter.Route.addListener('enter', (e) => {
-    // TODO: Check wether or not the headers have been sent
-    if(e.next) e.next()
+    if(e.next && !e.response.finished) e.next()
   })
 })
 
