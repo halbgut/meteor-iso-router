@@ -11,25 +11,27 @@ Working on it.
 ## Usage
 
 ```js
-IsoRouter.route('/start')
-  .action(function renderStart (parameters) {
-    Blaze.renderWithData(
-      Template.start,
-      {header: 'hi!'},
-      document.body
-    )
-  })
-  .enter(function enterStart (parameters, next) {
-    Meteor.subscribe('someSub', next)
-  })
-  .exit(function clearBody () {
-    document.body = ''
-  })
-
-IsoRouter.route('/somthing.txt')
-  .server(function serveSomething (req, res, next) {
-    res.end('hi')
-  })
+if(Meteor.isClient) {
+  IsoRouter.route('/start')
+    .addListener('enter', function renderStart (e) {
+      Blaze.renderWithData(
+        Template.start,
+        {header: 'hi!'},
+        document.body
+      )
+    })
+    .addListener('enter', function enterStart (e) {
+      Meteor.subscribe('someSub', e.next)
+    })
+    .addListener('exit', function clearBody () {
+      document.body = ''
+    })
+} else {
+  IsoRouter.route('/somthing.txt')
+    .addListener('enter', function serveSomething (e) {
+      e.response.end('hi')
+    })
+  }
 ```
 
 ## TODO
