@@ -1,4 +1,4 @@
-# iso-router - 0.0.15
+# iso-router - 0.1.0
 A Isomorphic Router for meteor
 
 ## Documentation
@@ -35,4 +35,4 @@ if(Meteor.isClient) {
 ```
 
 ## TODO
-* ES6ify
+
