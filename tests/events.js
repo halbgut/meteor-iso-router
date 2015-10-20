@@ -5,7 +5,7 @@ Tinytest.add('createEvent', function (test) {
     test.equal(testEvent.constructor, CustomEvent, 'It should create a object using CustomEvent on the client')
   } else {
     test.equal(testEvent.eventName, 'testevent')
-    test.equal(testEvent.eventData, 'yolo')
+    test.equal(testEvent.eventData, {detail: 'yolo'})
   }
 })
 
