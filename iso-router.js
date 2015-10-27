@@ -59,7 +59,7 @@ IsoRouter.navigate = navigate
  * @return {Route} The newly created route
  */
 IsoRouter.route = function isoRouterRoute (path) {
-  var keys = []
+  let keys = []
   return (
     this.routes[this.routes.push(Object.create(Route)) - 1]
       .set('path', path)
