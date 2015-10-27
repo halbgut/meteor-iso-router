@@ -10,25 +10,12 @@ function elemStub (attributes) {
 
 Tinytest.addAsync('IsoRouter.navigate', function (test, done) {
   if(Meteor.isClient) {
-    IsoRouter.currentRoute.get().navigate('/test')
+    IsoRouter.navigate('/test')
     _.defer(function () {
       test.isTrue(IsoRouter.location().indexOf('/test') > -1, 'IsoRouter should change the location to the passed argument')
-    })
-    HTTP.get('/redirect_me', function (err, res) {
-      test.equal(res.content, 'HiLo', 'It should do a redirect server-side.')
       done()
     })
-  } else {
-    IsoRouter.route('/redirect_me')
-      .action(function () {
-        this.navigate('/downlow')
-      })
-    IsoRouter.route('/downlow')
-      .action(function () {
-        this.res.end('HiLo')
-      })
-    done()
-  }
+  } else done()
 })
 
 if(Meteor.isClient) {
@@ -96,3 +83,4 @@ Tinytest.add('getPath', function (test) {
     test.equal(getPath('/tet?q=1#asd'), '/tet?q=1#asd', 'It should be able to handle relative urls')
     test.equal(getPath('#asd'), '#asd', 'It should be able to handle relative urls')
 })
+

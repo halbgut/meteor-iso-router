@@ -38,8 +38,6 @@ Package.onTest(function (api) {
     'lib/utils.js',
     'lib/events.js',
     'lib/navigate.js',
-    'lib/route.js',
-    'iso-router.js'
   ])
   api.addFiles([
     'tests/app.browserify.js',
