@@ -10,7 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom('METEOR@1.2')
   api.use(['ecmascript', 'webapp', 'underscore', 'reactive-var'])
   api.use('cosmos:browserify@0.8.1')
-  Npm.depends({ 'path-to-regexp': '0.1.7' })
+  Npm.depends({ 'path-to-regexp': '0.1.6' })
   api.addFiles(
     [
       'app.browserify.js',
