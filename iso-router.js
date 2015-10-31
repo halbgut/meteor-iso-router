@@ -19,29 +19,28 @@ IsoRouter.routes = []
  */
 if(Meteor.isClient) IsoRouter.currentRoute = new ReactiveVar()
 
-IsoRouter.events = {
-  enter: 'isoRouter-enter',
-  exit: 'isoRouter-exit'
-}
-
 /**
  * The prototype of all routes. You can access it to set global defaults. See {@link Route.enter}, {@link Route.action} and {@link Route.exit}.
  * @locus anywhere
  * @type {object}
  */
 IsoRouter.Route = Object.create(Route)
-// TODO: Document this *really* well. It would be nicer if I didn't have to do this
-_.defer(() => {
-  IsoRouter.Route.addListener('enter', (e) => {
-    if(e.next && !e.response.finished) e.next()
-  })
+
+/**
+ * Triggers when the client enters a route
+ * @locus anywhere
+ * @event enter
+ */
+createEvent('enter', (e) => {
+  if(Meteor.isServer && e.next && !e.response.finished) e.next()
 })
 
-if(Meteor.isClient) {
-  IsoRouter.Route.addListener('enter', (e) => {
-    IsoRouter.currentRoute.set(e.route)
-  })
-}
+/**
+ * Triggers when the client exits a route
+ * @locus client
+ * @event exit
+ */
+createEvent('exit', () => {})
 
 /**
  * With this function you can navigate to a cerain URL. You can't simply do a `location.href = '/internal/url'`. This will initiate a new HTTP request to that location. You have to go through this function. Server-side, this function does a [302]{@link https://tools.ietf.org/html/rfc7231#section-6.4.3} _redirect_. So you could use it for a moved page. When you URL schema changes you can simply use this to dynamically redirect the client. The URL is passed to the client by setting the `Location`-header. The function is called asynchronously using `_.defer`.
@@ -92,30 +91,15 @@ IsoRouter.location = function IsoRouterLocation (req) {
   return (req && req.url) || location.href
 }
 
-/**
- * Triggers when the client enters a route
- * @event isoRouter-enter
- */
-IsoRouter.dispatchEnter = function IsoRouterDispatchEnter (request, response, next) {
-  dispatchEvent(IsoRouter.events.enter, generateEventParameters.apply(null, arguments))
-}
-
-/**
- * Triggers when the client has entered a route
- * @event isoRouter-exit
- */
-IsoRouter.dispatchExit = function IsoRouterDispatchExit (request, response, next) {
-  dispatchEvent(IsoRouter.events.exit, generateEventParameters.apply(null, arguments))
-}
-
-
-eventTarget.addEventListener(
-  'load',
-  IsoRouter.dispatchEnter
-)
-
-if(Meteor.isServer) {
+if(Meteor.isClient) {
+  addEventListener(
+    'load',
+    () => dispatchEvent('enter', generateEventParameters.apply(null, arguments))
+  )
+} else {
   /* Install the global listener */
-  WebApp.connectHandlers.use(IsoRouter.dispatchEnter)
+  WebApp.connectHandlers.use(function () {
+    dispatchEvent('enter', generateEventParameters.apply(null, arguments))
+  })
 }
 
