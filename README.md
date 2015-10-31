@@ -1,4 +1,4 @@
-# iso-router - 0.1.1
+# iso-router - 0.2.0
 A Isomorphic Router for meteor
 
 ## Documentation
@@ -56,5 +56,4 @@ if(Meteor.isClient) {
 ```
 
 ## TODO
-* Update the tests
 
