@@ -98,7 +98,8 @@ if(Meteor.isClient) {
   )
 } else {
   /* Install the global listener */
-  WebApp.connectHandlers.use(function () {
+  WebApp.connectHandlers.use(function (req, res, next) {
+    if(isFile(req.url)) return next()
     dispatchEvent('enter', generateEventParameters.apply(null, arguments))
   })
 }
